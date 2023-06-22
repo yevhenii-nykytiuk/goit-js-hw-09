@@ -62,6 +62,7 @@ function hendleOnBtnStartClick() {
       clearInterval(intervalId);
       dateStartBtn.disabled = false;
       dateTime.disabled = false;
+      dateStopBtn.disabled = true;
     }
     
   }, 1000)
