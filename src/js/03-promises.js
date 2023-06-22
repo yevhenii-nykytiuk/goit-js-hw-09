@@ -2,21 +2,28 @@ import Notiflix from 'notiflix';
 
 const formBtnSubmit = document.querySelector(".form");
 
-formBtnSubmit.addEventListener("click", hendlerOnClickCreatePromise);
+formBtnSubmit.addEventListener("submit", hendlerOnClickCreatePromise);
 
 function hendlerOnClickCreatePromise(e) {
 
   e.preventDefault();
 
-  const firstDelay = formBtnSubmit.delay.value;
-  const delayStep = formBtnSubmit.step.value;
-  const amount = formBtnSubmit.amount.value;
+  let inputForm = e.target.elements;
 
-    for (let i = 0; i < amount; i += 1) {
-      let position = i + 1;
-      const delays = Number(firstDelay) + delayStep * i;
+  let firstDelay = Number(inputForm.delay.value);
+  let delayStep = Number(inputForm.step.value);
+  let amount = Number(inputForm.amount.value);
 
-      createPromise(position, delays)
+  if (firstDelay <= 0 || delayStep <= 0 || amount <= 0) {
+    Notiflix.Notify.failure("Менше або дорівнює нуль не проходить!");
+    return;
+  }
+
+  for (let position = 1; position <= amount; position += 1) {
+
+    const delay = firstDelay + delayStep * (position - 1);
+
+      createPromise(position, delay)
         .then(({
           position,
           delay
@@ -29,28 +36,27 @@ function hendlerOnClickCreatePromise(e) {
         }) => {
           Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
         });
+      
+      // firstDelay += delayStep * i;
     }
   
-  e.currentTarget.reset();
+  e.target.reset();
 }
 
   function createPromise(position, delay) {
 
     return new Promise((resolve, reject) => {
+
       const shouldResolve = Math.random() > 0.3;
+
       setTimeout(() => {
         if (shouldResolve) {
-          resolve({
-            position,
-            delay
-          });
+          resolve({ position, delay });
         } else {
-          reject({
-            position,
-            delay
-          });
+          reject({ position, delay });
         }
       }, delay);
     })
-
   }
+
+// fetch("").then(response => response.json());

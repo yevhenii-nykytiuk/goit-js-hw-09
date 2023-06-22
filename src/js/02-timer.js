@@ -8,6 +8,8 @@ import Notiflix from 'notiflix';
 const dateTime = document.getElementById('datetime-picker');
 const dateStartBtn = document.querySelector('button[data-start]');
 
+const dateStopBtn = document.querySelector(".data-start");
+
 const timeDays = document.querySelector('span[data-days]');
 const timeHours = document.querySelector('span[data-hours]');
 const timeMinutes = document.querySelector('span[data-minutes]');
@@ -16,6 +18,7 @@ const timeSeconds = document.querySelector('span[data-seconds]');
 let intervalId = null;
 
 dateStartBtn.disabled = true;
+dateStopBtn.disabled = true;
 
 const options = {
   enableTime: true,
@@ -40,6 +43,10 @@ dateStartBtn.addEventListener("click", hendleOnBtnStartClick);
 
 function hendleOnBtnStartClick() {
 
+  dateStartBtn.disabled = true;
+  dateTime.disabled = true;
+  dateStopBtn.disabled = false;
+
   intervalId = setInterval(() => {
     const newDate = new Date(dateTime.value);
     const onStartingToClick = newDate - Date.now();
@@ -54,9 +61,19 @@ function hendleOnBtnStartClick() {
     if (onStartingToClick < 1000) {
       clearInterval(intervalId);
       dateStartBtn.disabled = false;
+      dateTime.disabled = false;
     }
     
   }, 1000)
+}
+
+
+dateStopBtn.addEventListener("click", hendleOnBtnStopClick);
+
+function hendleOnBtnStopClick () {
+  clearInterval(intervalId);
+  dateStopBtn.disabled = true;
+  dateStartBtn.disabled = false;
 }
 
 

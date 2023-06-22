@@ -11,12 +11,11 @@ colorStop.addEventListener("click", hendlerOnClickColorStop);
 
 let intervalId = null;
 
-colorStop.disabled = true;
-
 function hendlerOnClickColorStart({target}) {
 
   target.setAttribute("disabled", true);
   colorStop.removeAttribute("disabled");
+
 
     intervalId = setInterval(() => {
       document.body.style.backgroundColor = getRandomHexColor();
